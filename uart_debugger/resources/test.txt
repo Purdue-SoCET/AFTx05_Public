@@ -1,0 +1,21 @@
+# Sending alive command
+R 86 
+# Setting address to 0x8
+T 83 00 00 00 08 
+# Setting count to 0x2
+T 82 02 
+# Writing ['AABBCCDD', 'DDCCBBAA'] to debugger
+T 85 AA BB CC DD DD CC BB AA 
+# Holding core in reset
+T 87 
+# Releasing core from reset
+T 88 
+# Setting address to 0x8
+T 83 00 00 00 08 
+# Setting count to 0x1
+T 82 01 
+# Read number of bytes set above
+R 84 
+# Sending alive command
+R 86 
+X

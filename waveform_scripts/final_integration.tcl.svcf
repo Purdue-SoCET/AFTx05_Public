@@ -1,0 +1,513 @@
+# SimVision Command Script (Mon Nov 25 10:47:57 AM EST 2019)
+#
+# Version 15.20.s030
+#
+# You can restore this configuration with:
+#
+#
+
+
+#
+# Preferences
+#
+preferences set toolbar-Standard-WatchWindow {
+  usual
+  shown 0
+}
+preferences set plugin-enable-svdatabrowser-new 1
+preferences set cursorctl-dont-show-sync-warning 1
+preferences set toolbar-Windows-WatchWindow {
+  usual
+  shown 0
+}
+preferences set toolbar-Standard-Console {
+  usual
+  position -pos 1
+}
+preferences set toolbar-Search-Console {
+  usual
+  position -pos 2
+}
+preferences set toolbar-Standard-WaveWindow {
+  usual
+  position -pos 1
+}
+preferences set plugin-enable-groupscope 0
+preferences set plugin-enable-interleaveandcompare 0
+preferences set plugin-enable-waveformfrequencyplot 0
+preferences set toolbar-SimControl-WatchWindow {
+  usual
+  shown 0
+}
+preferences set whats-new-dont-show-at-startup 1
+preferences set toolbar-TimeSearch-WatchWindow {
+  usual
+  shown 0
+}
+
+#
+# Simulator
+#
+database require simulator -hints {
+	simulator "irun -gui -input final_integration.tcl -delay_trigger -access +rwc -linedebug /local/scratch/a/socet02/SoCET_Public/top_level/tb_top_level_bASIC.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/rv32i_types_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/alu_types_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/risc_mgmt/template_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/risc_mgmt/crc32_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/risc_mgmt/rv32m_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/risc_mgmt/test_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/machine_mode_types_1_11_pkg.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/machine_mode_types_pkg.sv /local/scratch/a/socet02/SoCET_Public/top_level/src/top_level_bASIC.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/risc_mgmt/risc_mgmt_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/risc_mgmt/tspp/tspp_risc_mgmt.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/risc_mgmt/extensions/template/template_decode.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/risc_mgmt/extensions/template/template_execute.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/risc_mgmt/extensions/template/template_memory.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/alu.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/branch_res.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/control_unit.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/dmem_extender.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/endian_swapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/jump_calc.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/memory_controller.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/RISCVBusiness.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/standard_core/rv32i_reg_file.sv /local/scratch/a/socet02/SoCET_Public/top_level/src/m0_core_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/pipelines/pipeline_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/pipelines/tspp/tspp_execute_stage.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/pipelines/tspp/tspp_fetch_stage.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/pipelines/tspp/tspp_hazard_unit.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/pipelines/tspp/tspp.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_disabled/sparce_disabled.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_enabled/sparce_cfid.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_enabled/sparce_enabled.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_enabled/sparce_psru.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_enabled/sparce_sasa_table.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_enabled/sparce_sprf.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/sparce/sparce_enabled/sparce_svc.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/branch_predictors/branch_predictor_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/branch_predictors/nottaken_predictor/nottaken_predictor.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/privs/priv_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/privs/priv_1_11/priv_1_11_block.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/privs/priv_1_11/priv_1_11_control.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/privs/priv_1_11/priv_1_11_csr_rfile.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/privs/priv_1_11/priv_1_11_pipeline_control.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/caches/caches_wrapper.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/caches/pass_through/pass_through_cache.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/caches/separate_caches.sv /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/bus_bridges/ahb.sv /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/uart.sv /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/buffer.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/debugger.sv /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/rcu.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/start_bit_det.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/stop_bit_chk.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/tcu.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/timer.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/transmit.v /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/debugger_top.sv /local/scratch/a/socet02/SoCET_Public/uart_debugger/src/AHB_Lite_Mux.v /local/scratch/a/socet02/SoCET_Public/ahb/apb_bridge/src/APB_Bridge.sv /local/scratch/a/socet02/SoCET_Public/ahb/apb_bridge/src/APB_Decoder.sv /local/scratch/a/socet02/SoCET_Public/ahb/apb_bridge/src/ahb2apb.sv /local/scratch/a/socet02/SoCET_Public/apb/gpio/src/APB_SlaveInterface.sv /local/scratch/a/socet02/SoCET_Public/apb/gpio/src/edge_detector.sv /local/scratch/a/socet02/SoCET_Public/apb/gpio/src/Gpio.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/sram_controller.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/ahb_slave.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/encoder.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/decoder.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/sram_ahb_slave.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/SOC_RAM.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/sram_ti_wrapper.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/endian_swapper_ram.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/Memory_RAO.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/onchip_sram.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/memory_blocks.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/offchip_sram_controller.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/offchip_sram_simulator.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/SOC_ROM.sv /local/scratch/a/socet02/SoCET_Public/sram_controller/src/SOC_RAM_wrapper.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/apb_slave.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/control_register.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/crc32.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/dig_poly_NAND_NOR2x_1.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/dig_poly_XOR_BUF2_x1.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/POLI_top_level.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/sim_NAND_NOR.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/sim_wrapper_NAND_NOR.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/sim_wrapper_XOR_BUF.sv /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/src/sim_XOR_BUF.sv /local/scratch/a/socet02/SoCET_Public/apb/pwm/source/APB_SlaveInterface_general.sv /local/scratch/a/socet02/SoCET_Public/apb/pwm/source/flex_counter.sv /local/scratch/a/socet02/SoCET_Public/apb/pwm/source/pwmchannel.sv /local/scratch/a/socet02/SoCET_Public/apb/pwm/source/pwm.sv /local/scratch/a/socet02/SoCET_Public/apb/timer/src/APB_SlaveInterface_timer.sv /local/scratch/a/socet02/SoCET_Public/apb/timer/src/clock_divider.sv /local/scratch/a/socet02/SoCET_Public/apb/timer/src/edge_detector_timer.sv /local/scratch/a/socet02/SoCET_Public/apb/timer/src/Timer.sv /local/scratch/a/socet02/SoCET_Public/cypress_ram_sim/src/cy7c1049bn.vhd -incdir ./src -incdir ./include -incdir /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/include/ -incdir /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/ -incdir /local/scratch/a/socet02/SoCET_Public/RISCVBusiness/source_code/packages/risc_mgmt/ -incdir /local/scratch/a/socet02/SoCET_Public/m0/include/ -incdir /local/scratch/a/socet02/SoCET_Public/uart_debugger/include/ -incdir /local/scratch/a/socet02/SoCET_Public/ahb/ahb_interconnect/include/ -incdir /local/scratch/a/socet02/SoCET_Public/ahb/apb_bridge/include/ -incdir /local/scratch/a/socet02/SoCET_Public/amba_common/include/ -incdir /local/scratch/a/socet02/SoCET_Public/apb/gpio/include/ -incdir /local/scratch/a/socet02/SoCET_Public/apb/i2c/include/ -incdir /local/scratch/a/socet02/SoCET_Public/sram_controller/include/ -incdir /local/scratch/a/socet02/SoCET_Public/apb/polymorphic_crc/inc/ -incdir /local/scratch/a/socet02/SoCET_Public/apb/timer/include/ -incdir /local/scratch/a/socet02/SoCET_Public/cypress_ram_sim/include/ -input final_integration.tcl"
+}
+
+#
+# Mnemonic Maps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+
+#
+# Design Browser windows
+#
+if {[catch {window new WatchList -name "Design Browser 1" -geometry 768x946+1091+60}] != ""} {
+    window geometry "Design Browser 1" 768x946+1091+60
+}
+window target "Design Browser 1" on
+browser using {Design Browser 1}
+browser set -scope [subst  {simulator::[format {tb_top_level_bASIC.bASIC.Gpio0}]} ]
+browser set \
+    -signalsort name
+browser yview see [subst  {simulator::[format {tb_top_level_bASIC.bASIC.Gpio0}]} ]
+browser timecontrol set -lock 0
+
+#
+# Waveform windows
+#
+if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1910x951+0+24}] != ""} {
+    window geometry "Waveform 1" 1910x951+0+24
+}
+window target "Waveform 1" on
+waveform using {Waveform 1}
+waveform sidebar visibility partial
+waveform set \
+    -primarycursor TimeA \
+    -signalnames name \
+    -signalwidth 175 \
+    -units ps \
+    -valuewidth 170
+waveform baseline set -time 0
+
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.gpioIf0.w_data[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.gpioIf0.w_data[7:0]}]}
+	} ]]
+waveform format $id -radix %d
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.gpioIf0.en_data[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.gpioIf0.r_data[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.priv_wrapper_i.priv_block_i.prv_control_i.nRST}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.priv_wrapper_i.priv_block_i.prv_control_i.CLK}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.rx_i}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.tx_o}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.debugger_top.debugger.state[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.debugger_top.debugger.alive_state}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.debugger_top.debugger.crc_reg[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.debugger_top.debugger.data_in[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.debugger_top.debugger.data_send[7:0]}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.fetch_stage_i.instr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.fetch_stage_i.pc[31:0]}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.instr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.opcode[6:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.load_type[2:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.alu_op[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.jump}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.branch}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.branch_type[2:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.dren}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.cu_if.control_unit.dwen}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.execute_stage_i.rf.registers[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.hazard_if.mal_insn}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.hazard_if.illegal_insn}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.priv_wrapper_i.priv_block_i.prv_control_i.exception}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.if_ex_enable}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.pc[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.rd[4:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.rdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.sasa_addr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.sasa_data[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.sasa_wen}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.skipping}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.sparce_target[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.wb_data[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.sparce_if.pipeline.wb_en}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.mc.current_state}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.mc.next_state}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.mc.rdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.mc.wdata[31:0]}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -label d_gen_bus -comment {}]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.addr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.busy}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.rdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.ren}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.wdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.dcache_mc_if.generic_bus.wen}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -label i_gen_bus -comment {}]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.addr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.busy}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.rdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.ren}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.wdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.icache_mc_if.generic_bus.wen}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -label out_gen_bus -comment {}]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.addr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.busy}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.rdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.ren}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.wdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.corewrap.RISCVBusiness.pipeline_trans_if.cpu.wen}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.sram_ahb_slave.AHBS0.next}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.sram_ahb_slave.AHBS0.current}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HADDR[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HRDATA[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HWDATA[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HWRITE}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HTRANS[1:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HSIZE[2:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HSEL}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HRESP[1:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HREADYOUT}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf_ahbif.HREADY}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.encoder.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.encoder.sram_en[0:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.encoder.latched_flag}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.encoder.rData_in[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.encoder.ram_rData[0:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.encoder.rData[31:0]}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.ahb_slave.HRDATA[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sram_controller.mcif.ahb_slave.rData[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.addr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.ram_rData[0:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.ram_wData[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.sram_en[0:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.sram_wait}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.sramIf.controller.wen}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.addr[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.sram_active}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.soc_memory.rom_active}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.soc_memory.ram_active}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.sram_rdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.sram_wait}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.wdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.wen}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[0].cypress_ram0:A}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[0].cypress_ram0:CE_b}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[0].cypress_ram0:OE_b}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[0].cypress_ram0:WE_b}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[1].cypress_ram0:WE_b}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[2].cypress_ram0:WE_b}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[3].cypress_ram0:WE_b}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.controller.external_wdata[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[0].cypress_ram0:DQ}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[1].cypress_ram0:DQ}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[2].cypress_ram0:DQ}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.cypress_srams.genblk1[3].cypress_ram0:DQ}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.RAM.TOPRAM.RAM[128:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.RAM.TOPRAM.addr[15:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.RAM.TOPRAM.byte_en[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.RAM.TOPRAM.w_en}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.RAM.TOPRAM.r_data[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.RAM.TOPRAM.w_data[31:0]}]}
+	} ]]
+set id [waveform add -cdivider divider]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.sram.external_addr[18:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.controller.external_rdata[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.blkif.sram.wdata[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.controller.external_wdata[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.controller.nCE}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.controller.nOE}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.offchip_sramif.controller.nWE[3:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.offchip_sram.DELAY_MAX}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{simulator::[format {tb_top_level_bASIC.bASIC.offchip_sram.active}]}
+	} ]]
+set id [waveform add -cdivider divider]
+
+waveform xview limits 0 3289078.614ps
+
+#
+# Waveform Window Links
+#
+
+#
+# Console windows
+#
+console set -windowname Console
+window geometry Console 730x250+261+564
+
+#
+# Layout selection
+#
+
