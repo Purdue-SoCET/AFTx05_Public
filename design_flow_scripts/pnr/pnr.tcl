@@ -13,7 +13,7 @@ setMultiCpuUsage -localCpu 8
 set ip_lefs [list ]
 lappend ip_lefs ${PDK_PATH}/lef/soi90nm_5_1_1.lef
 lappend ip_lefs ${STDLIB_PATH}/MITLL90_STDLIB_8T.lef
-lappend ip_lefs ./scripts/MITLL90_IOPads_5_1_1.lef
+lappend ip_lefs ${IOLIB_PATH}/MITLL90_IOPads_5_1_1.lef
 lappend ip_lefs ./scripts/ro_hope.lef
 lappend ip_lefs ./scripts/polymorphic.lef
 
