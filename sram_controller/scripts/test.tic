@@ -1,0 +1,95 @@
+I I
+
+S 0x0
+A 00000004
+W aabbccdd
+
+S 0x0
+A 00000005
+W bbccddaa
+
+S 0x0
+A 00000006
+W ccddaabb
+
+S 0x0
+A 00000007
+W 11111111
+
+S 0x2
+A 00000004
+E 11dddddd
+
+
+# write 8-bit on top of 32-bit data 
+S 0x2
+A 00000000 
+W aabbccdd
+
+S 0x1
+A 00000002
+W 55667788
+
+# read full word
+S 0x2
+A 00000000
+E 5566ccdd
+
+S 0x2
+A 00000018
+W AABBCCDD
+
+S 0x1
+A 00000018
+W 00001010
+
+S 0x2
+A 00000018
+E AABB1010
+
+
+I I
+
+# W R W
+# write some data to fill memory 
+S 0x2
+A 00000008 
+W 77778888
+W 33334444
+W 22221111
+
+
+# read half word
+S 0x1
+A 00000010
+R 
+
+# write to old address
+S 0x2
+A 00000004 
+W bad0bad0
+W 12345678
+
+# read back address
+A 00000000
+R R
+
+# test write to read trans with byte getting latched
+S 0x2
+A 00000000
+W aa55bbcc
+
+S 0x0
+A 00000002
+W 00ff0000
+
+S 0x2
+A 00000000
+E aaffbbcc
+
+#--------------------------------------------
+
+I I
+
+
+X

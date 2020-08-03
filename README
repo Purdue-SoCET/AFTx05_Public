@@ -1,0 +1,173 @@
+--------------------------------
+Purpose of This Repository:
+--------------------------------
+This is the Purdue University SoCET Team's AFTx05_Public SoC which was taped out with the 
+December 2019 MIT Lincoln Labs 90nm PDK. Both the source and design flow scripts 
+used for this chip are included in this repository. The aim of publishing this 
+open-source design is to:
+
+	1. Provide an example for other teams working on SoC/ VLSI development 
+	   (especially with a RISCV processor)
+
+	2. Provide insight to what the SoCET Team is working on/ capable of. If 
+	   you have any suggestions for how we can improve components in our design, 
+	   or you would like to work on a project with us, please feel free to get
+	   in touch with Dr. Mark C. Johnson (mcjohnson@purdue.edu).
+
+
+------------------------------------------
+About the MIT Lincoln Labs 90nm FDSOI PDK:
+------------------------------------------
+The PDK version used to tapeout AFTx05_Public was the MITLL_90_Dec2019 revision released on 2019.12.20.
+To recieve a MITLL PDK, please email the technical contact listed below. We encourage people with 
+new to using EDA tools to obtain the same PDK version listed below, since it is the most compatible 
+with the design flow scripts included in this repository. 
+
+*** YOU WILL NOT BE ABLE TO TAPEOUT A DESIGN USING AN OUT-OF-DATE PDK ***. 
+
+The most compatible version listed is to only be used for EDA practice. Please request the latest
+PDK version from the technical contact if you would like to tapeout a design!!
+
+ * Version of PDK used for AFTx05_Public:
+       MITLL_90_Dec2019:
+           MITLL90_STDLIB_8T (2019.12.20)
+           MITLL90_IOPads_5_1_1 (2020.01.27)
+
+ * MITLL website: 
+       https://www.ll.mit.edu/about/facilities/microelectronics-laboratory
+   
+ * CMOS brochure: 
+       https://www.ll.mit.edu/sites/default/files/facility/doc/2020-02/GOMAC_spotlight_CMOS_2020.pdf
+
+ * Technical Contact:
+       Pascale Gouker (pgouker@ll.mit.edu)
+
+--------------------------------
+Directory Structure of AFTx05_Public:
+--------------------------------
+  makefile - Used for simulation, try "make sim_source"
+  README.txt - The file you are currently reading
+
+  The 'include' subdirectories contain the header (.vh) files
+  The 'src' subdirectories contain systemVerilog (.sv) and verilog (.v) files
+  The 'tb' subdirectories contain the testbench files
+
+	1) amba_common (Contains the header files for both AHB and APB)
+
+	2) ahb (Contains both the ahb files, as well as the ahb-apb bridge files)
+		1.a) ahb_interconnect
+		1.b) apb_bridge
+		1.c) bus_mux
+		1.d) common
+		1.e) frbm
+		1.f) scripts
+		1.g) slave
+
+	3) apb (Contains the apb peripheral files)
+		3.a) gpio		(A general purpose input/ output with adjustable number of pins)
+		3.b) polymorphic_crc 	(A crc32 generator with configurable crc polynomial)
+		3.c) pwm 		(A pulse width modulator with adjustable number of channels)
+		3.d) timer 		(A timer with adjustable number of channels)
+
+	4) RISCVBusiness (Contains files for the single core, 2 stage, sparcity optimized RISCV processor, which is the first AHB master)
+
+  	5) uart_debugger (Files for the UART, which is the second AHB master)
+
+	6) sram_controller (Contains files for the sram_controller, offchip_sram_controller, ROM, and flip-flop emulated RAM)
+
+  	7) top_level (Contains files for top_level_bASIC, the top module in the design's hiearchy)
+
+  	8) waveform_scripts (Scripts to send important signals to the waveform window automatically)
+
+ 	9) design_flow_scripts (Contains scripts to synthesize, place-and-route, and perform logic equivalency checks)
+		9.a) syn	(Contains scripts to synthesize, try executing run_syn.sh)
+			9.a.i)   run_syn.sh 	(Script to run synthesis)
+			9.a.ii)  out 		(Where the generate mapped netlist will be)
+			9.a.iii) logs           (Contains generated log files for each stage of synthesis)
+			9.a.iv)  lec 		(Contains files for logic equivalency checks)
+			9.a.v)   run            (Contains generated database files for each stage of synthesis)
+			9.a.vi)  fv		(Contains generated LEC related databases)
+			9.a.vii) scripts	(Contains scripts for synthesis)
+				9.a.vii.1) setup.tcl		(Sets global variables the other scripts use)
+				9.a.vii.2) make_syn.tcl		(The main synthesis script)
+				9.a.vii.3) top_level_bASIC.sdc	(Sets the timing constraints and clock frequency)
+				9.a.vii.4) dft.tcl		(Inserts the scan chains and verifies them as well)
+				9.a.vii.5) mmmc.tcl		(Loads in the analysis views from the MITLL liberty file)
+
+		9.b) level2chip.sh (Transfers the mapped netlist to the pnr/prePnR_netlist directory and adds verilog for IO pads)     	
+
+		9c) pnr (Contains scripts for place-and-route, LEC, and ATPG)
+			9.b.i)    pnr.tcl		(Script that place and routes pnr/prePnR_netlist/top_chip.v)   
+			9.b.ii)   clean.sh     		(Script to clean out generated innovus files)
+			9.b.iii)  fix_pnr_netlist.sh 	(Script to make the post-PnR netlist simulate-able)
+			9.b.vi)   out			(Where the generated place and route files will be) 
+			9.b.v)    prePnR_netlist	(Where the IO pad verilog and netlist to be place-and-routed will be)   
+			9.b.vi)   timingReports		(Chere the innovus timing reports will be generated)    
+			9.b.vii)  ATPG			(Contains script for automatic test pattern generation)    			
+			9.b.viii) scripts		(Contains the pnr scripts)
+				9.b.viii.1) top_chip.io 		(Assigns IO pad placement)
+				9.b.viii.2) top_chip.sdc 		(Determines timing constraints and clock frequency)
+				9.b.viii.3) mmmc_AFTx05_Public_chip.view 	(Loads in the analysis views from the MITLL liberty file)
+				9.b.viii.4) ro_hope.lef 		(Describes the shaped of the analog ring oscillator)
+				9.b.viii.5) polymorphic.lef 		(Describes the shape of the polymorphic standard cells)
+
+-----------------------------------
+Versions of Cadence Software Used:
+-----------------------------------
+	Incisive 	15.2
+	Genus		18.1
+	Innovus 	18.1
+	Conformal	18.1
+	Modus		18.1
+	
+	
+--------------------------------
+How to simulate RTL source design:
+--------------------------------
+	1. Navigate to AFTx05_Public/
+	2. On the command line, execute 'make sim_source'
+
+----------------------------------
+How to synthesize a mapped netlist:
+----------------------------------
+	1. Navigate to AFTx05_Public/design_flow_scripts/syn/
+	2. Modify AFTx05_Public/design_flow_scripts/syn/scripts/setup.tcl to point to the correct PDK locations
+	3. On the command line, execute './run_syn.sh'
+	4. The generated mapped netlist will be AFTx05_Public/design_flow_scripts/syn/out/top_level_bASIC/top_level_bASIC.v
+
+----------------------------------
+How to simulate the mapped design:
+----------------------------------
+	1. Navigate to AFTx05_Public/
+	2. On the command line, execute 'make sim_mapped'
+	
+
+-----------------------------------------------------------------------------
+How to perform logical equivalence check (LEC) for mapped netlist:
+-----------------------------------------------------------------------------
+	1.  Navigate to AFTx05_Public/design_flow_scripts/syn/lec/
+	2.  On the command line, execute './fix_dofiles.sh'
+	3.  Navigate to AFTx05_Public/design_flow_scripts/syn/lec/rtl2mapped/
+	4.  On the command line, execute './rtl2mapped.sh'
+	5.  Check for Nonequivalencies
+	6.  Navigate to AFTx05_Public/design_flow_scripts/syn/lec/mapped2final/
+	7.  On the command line, execute './mapped2final.sh'
+	8.  Check for Nonequivalencies
+	9.  Navigate to AFTx05_Public/design_flow_scripts/syn/lec/rtl2final/
+	10. On the command line, execute './rtl2final.sh'
+	11. Check for Nonequivalencies
+
+-----------------------------------------------
+How to place and route (PnR) the mapped design:
+-----------------------------------------------
+	1. Navigate to AFTx05_Public/design_flow_scripts/
+	2. On the command line, execute './level2chip.sh'
+	3. Navigate to AFTx05_Public/design_flow_scripts/pnr/
+	4. Modify the top of AFTx05_Public/design_flow_scripts/pnr/pnr.tcl to point to the correct PDK locations
+	5. On the command line, execute 'innovus'
+	6. Within the Innovus CIW, execute 'source pnr.tcl'
+	7. The generated files will be located at AFTx05_Public/design_flow_scripts/pnr/out/
+
+
+
+
