@@ -1,0 +1,16 @@
+
+"""
+def configure(ctx):
+    ctx.setup_hdl_module('apb_serial',
+        tb = 'tb_SerialSlave',
+        src_dir='./source',
+        use=['ahb2apb','ahb_frbm'])
+"""
+def configure(ctx):
+    ctx.SFFUnits.add('m0_debugger',
+        tb_use=['ahb_frbm'],
+        tb_includes=['include', '../amba_common/include'],
+        includes=['include', '../amba_common/include'],
+        tb_src=['tb/tb_debugger_top.sv'],
+        tb='tb_debugger_top')
+

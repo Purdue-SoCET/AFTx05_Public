@@ -1,0 +1,6 @@
+#!/bin/bash
+riscvfile=riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-centos6
+wget https://static.dev.sifive.com/dev-tools/${riscvfile}.tar.gz
+tar -xzvf ${riscvfile}.tar.gz
+mv ${riscvfile} riscv-tools
+rm ${riscvfile}.tar.gz

@@ -1,0 +1,13 @@
+#!/bin/bash
+dir="VIP-SW-Libs/"
+newdir="lib_apb/"
+if [ -d $newdir ]
+then
+  echo "Deleting Existing"
+  rm $newdir -r
+fi
+
+$(git clone "https://github.com/rtswan22/VIP-SW-Libs.git")
+
+rm "$dir/.git" -r -f
+mv $dir $newdir

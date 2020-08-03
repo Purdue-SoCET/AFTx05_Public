@@ -1,0 +1,27 @@
+#WRITE32 DATA FILE
+#**DO NOT ADD A NEWLINE
+#Performs 3 testcases:
+#Testcase 1 => Write without setting address
+#Testcase 2 => Send partial word while testing ALIVE with small data
+#Testcase 3 => Send partial word while testing ALIVE with large data
+#Testcase 4 => Fill up memory address
+#testcase1
+#addr = x
+#count = 1
+#write_data = 100
+1 0 0 100
+#testcase2
+#addr = 0
+#count =  1
+#write_data = 1
+2 0 1 1
+#testcase3
+#addr = 0
+#count = 1
+#write_data = 1
+3 0 1 1
+#testcase4
+#addr = 0
+#count =  1
+#write_data = 10
+4 0 32 10

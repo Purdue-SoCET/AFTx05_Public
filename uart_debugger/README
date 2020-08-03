@@ -1,0 +1,415 @@
+-------------------
+- DEBUGGER README -
+-------------------
+
+------------------------------------------------------------------------------------------------------------
+Current Version 	: 1.0 
+
+Authors			: - Chuan Yean Tan & Andrew Brito (Fall 2012)
+			  - Chuan Yean Tan, Andrew Brito, Todd Wild, Xin Tze Tee & Richard Park(Spring 2013)
+			  - Chuan Yean Tan & Andrew Brito (Summer 2013)
+
+Description		: M0 core debug unit :
+			  - able to perform read and write operations from/to the processor memory
+			    via AHB bus protocol
+		  	  - able to stall M0-core while performing read/write operations
+			  
+
+Last Updated		: 6/26/2013
+------------------------------------------------------------------------------------------------------------
+
+
+Table of content: 
+-----------------
+
+1. Design Simulation
+	1.1 Source Simulation
+	1.2 Eve/Zebu Cards Setup
+	1.3 Probing on Eve/Zebu Cards
+	1.4 Mapped Simulation
+
+2. Design Specifications
+	2.1 Debugger Source Directory
+	2.2 Debugger Scripts Directory
+	2.3 Core Wrapper Description
+	2.3 Debugger Module Description
+	2.4 UART Specifications
+
+3. Design Reports
+
+4. Resources/References
+
+
+============================================================================================================
+
+1. Design Simulation
+----------------------
+
+1.1 Source Simulation
+---------------------- 
+
+> make full_source 	: Compiles the source version of a full design including its top level test bench
+> make sim_full_source 	: Compiles and simulates the source version of a full design including its top level test bench
+> make sim_full_mapped	: compiles and simulates the mapped version of a full design including its top level test bench
+
+Source Waveforms
+> source waveforms/<testbench.do>
+
+List of Waveforms - Test Bench : 
+tb_alive_slavae.do - tb_alive_slave.sv
+tb_core_wrapper.do - tb_core_wrapper.sv
+tb_read32_slave.do - tb_read32_slave.sv
+tb_write32_slave.do- tb_write32_slave.sv
+
+Run 25 milli-seconds
+> run 25ms
+
+
+1.2 EVE/Zebu Card Setup
+-----------------------
+
+
+> file->save project as # .zpf must be saved in zebu.src under the current directory for some reason
+
+# Add VHDL or Verilog code
+> Click "RTL Group Properties"
+> set synthesizer option to zFAST
+> right click RTL Group, add VHDL sources (or verilog sources)
+> add all the HDL files (excluding any memory)
+> Click design, put top level entity names in "top name"
+> do the same in RTL Group
+
+> click SVA tab
+> Set assertions to ignore
+
+> click default backend, click browse button for "target hardware configuration"
+> choose /package/eda/eve/zebu/purdue_UF_2_LX200.tcl
+
+> click clock declaration, add any clocks used in HDL code (at the top level)
+
+# Generate DVE
+> click evironment, check auto generated, HDL cosimuation, and VHDL/verilog
+> click generate now, save file in zebu.src (make sure name ends in .dve)
+
+
+
+1.3 Probing on EVE/Zebu Cards 
+------------------------------
+
+Static probes  - defined at compile time by user
+Dynamic probes - probes of opportunity automatically created by the compiler
+
+Probes allow user to view specific signals inside the design. 
+
+
+# Static probes
+> click environment, check user defined
+> click edit under DVE file
+> add signals you want to probe, it is a comma separated
+
+Note: only works with input/outputs of components, not internal signals
+
+Declaring probes in DVE file: 
+
+> toplevel.secondlevel.signal [x:0]
+
+Example: 
+
+.output_bin({
+core_wrapper.debugger_top.debugger.HADDR [31:0] ,
+core_wrapper.debugger_top.debugger.HRDATA [31:0] ,
+core_wrapper.debugger_top.debugger.HREADY ,
+core_wrapper.debugger_top.debugger.state [6:0] , 
+core_wrapper.debugger_top.debugger.read32_state [2:0] ,
+core_wrapper.debugger_top.debugger.count_reg [31:0] , 
+core_wrapper.debugger_top.debugger.send_x_byte_ctr [31:0]
+});
+
+
+# Dynamic probes [this part was very particular about the order I clicked in]
+> click on debugging, check dynamic probes, click "..." (save in zebu.src)
+> click build list
+> choose instance, choose signal (repeat as needed)
+> click generate, check verilog, click generate
+
+Note: the .net file won't be right until after the next time you compile
+
+
+
+1.4 Mapped Simulation
+----------------------
+
+> setenv MTI_VCO_MODE ”64” 
+> mkdir zebu.run
+> cd zebu.run
+> vlib vsim.work
+
+> vlog -sv -work vsim.work ../source/tb_core_wrapper.sv ../zcui.work/zebu.work/core_wrapper.v ../../ahb/frbm/src/ahb_frbm.sv ../../ahb/slave/src/ahb_gen_slave.sv
+> vsim vsim.work.tb_core_wrapper -i -pli libZebuPLI.so +zebu.work=../zcui.work/zebu.work
+
+
+
+
+2. Design Specification
+------------------------
+
+2.1 Debugger File Directory
+---------------------------
+
+Top-level Wrapper 	:  core_wrapper.v -> debugger_top.v <M0 CORE>/ahb_frbm.sv
+
+Second-level Wrapper	:  debugger_top.v 
+
+Debugger module 	:  debugger.v
+
+UART module		:  buffer.v
+	   		   rcu.v
+	   		   start_bit_det.v
+	   		   stop_bit_chk.v
+	   		   timer.v
+	   		   tcu.v
+	   		   transmit.v
+
+AHB test modules: 
+
+AHB master		: ahb_frbm.sv
+AHB slave		: ahb_gen_slave.sv
+
+
+Debugger Test Benches: 
+
+-> tb_read32_slave.sv
+-> tb_write32_slave.sv
+-> tb_alive_slave.sv
+-> tb_core_wrapper.sv
+
+
+
+2.2 Debugger Scripts Directory:
+-------------------------------
+
+1. assertion_update.py
+
+Desciption: 
+Adds or Updates OVL assertions to specified state machines. 
+
+Usage: 
+> ./scripts/assertion_update.py source/debugger.v
+
+2. waveform_dup.py
+
+Description:
+Duplicate waveforms from different test benches
+
+Usage: 
+> ./scripts/waveform_dup.py [waveform].do [old testbench] [new testbench]
+
+3. make.py
+
+Description: 
+Compile all files related to the debugger project by envoking the 'make new_sim_source' 
+command from the Makefile. Then, automatically open the ModelSim simulation of the design.
+
+Usage: 
+> ./scripts/make.py
+
+
+2.3 Core Wrapper Description: 
+-----------------------------
+
+Core Module Function: 	Encapsulate the core and debugger as a single unit core master 
+			that is visible to other components. The wrapper gives priority 
+			to debugger when debugger request a read/write operation. 
+			The wrapper controls a single master output by multiplexing between
+			the outputs from both masters and setting a master's HREADY to 0 
+			when the master loses priority. 
+
+Master Illustration: 
+
+	------------
+	-	   -
+	- Core M0  - ---------
+	-	   - 	     -		 ----------------
+	------------         ----------> -	        -
+					 - PRIORITY MUX ------> AHB
+	------------	     ----------> - 	        - 
+	- 	   -	     -		 ----------------
+	- Debugger - ---------
+	-	   -
+	------------
+
+Note: If debug_rst is always asserted, Priority will always be given to Core M0 and debugger will remain in reset. 
+
+
+2.4 Debugger Module Description:
+--------------------------------
+
+Debugger Function: 	The debugger is able to interface with the M0 core 
+			and to perform read and write operations via the AHB protocol.
+			The debugger is able to interrupt the M0 core by
+			asserting its 'HTRANS' signal. The wrapper around
+			the core and the debugger is then able to arbitrate
+			between the two masters by feeding the current master
+			the 'HREADY' signal from the slave and by pulling the 
+			'HREADY' signal of the waiting master low.
+			Priority is normally given to the M0 core when the
+			debugger does not need to read or write to the slave.
+
+Debugger Design : 	
+
+Debugger consist of a large hierarchical finite state machine(HFSM). 
+More information on HFSM can be found in "The_Simple_Art_of_SoC_Design_Closing_the_Gap_between_RTL_and_ESL.pdf" located in the docs folder. 
+
+
+
+State Specifications: 
+
+The main state machine in debugger module consist of 8 states:
+
+i. 	IDLE
+ii. 	CHECK_RCV
+iii. 	SET COUNT
+iv. 	SET ADDRESS
+v. 	READ32
+vi. 	WRITE32
+vii. 	ALIVE
+viii.  	DONE
+
+
+i. IDLE 
+--------
+Debugger starts and variables are all reset. 
+If debug_rst signal is always asserted, the debugger will always remained reset.
+
+
+ii. CHECK_RCV
+--------------
+Receives a 8 bit data packet from the UART and evaluates it as a command. 
+Command evaluation:
+Example: 10000010
+The MSB/the 8th bit represents a valid command. valid->'1' | invalid->'0'
+The lower 7 bits represent the command. Example: executing command '2'
+
+Command list: 
+SET COUNT 	-> 2
+SET ADDRESS 	-> 3
+READ32		-> 4
+WRITE32		-> 5
+ALIVE 		-> 6
+
+
+iii. SET COUNT
+---------------
+- Set the number of bytes to be read from memory. 
+- Set count register to be used in READ32 / WRITE 32 
+
+
+iv. SET ADDRESS
+----------------
+- Set the address location (4 bytes) to be read from memory. 
+- Set address register to be used in READ32 / WRITE32
+
+v. READ32 
+----------
+- Reads data from memory via AHB bus. 
+- Receives data from AHB bus through HRDATA and transmit data through UART.
+
+
+vi. WRITE32
+------------
+- Writes data to memory via AHB bus
+- Recieves data from UART and writes it on AHB bus through HWDATA
+
+vii. ALIVE
+-----------
+- Sends "AE" byte through the UART. If user recieved "AE" through the UART, it indicates that the debugger is in ready state. 
+- Alive state is use to jump out of unfinished states in the debugger. 
+
+
+Sub State Machines:
+-------------------
+
+The sub state machines controls the registers that communicate with the UART: 
+
+i. rcv_x_byte
+--------------
+Recieves 8 bit packet from the UART. Number of bytes is set before task is executed. 
+
+ii. send_x_byte
+---------------
+Sends 8 bit packet from debugger via UART. Number of bytes sent is set before that task is executed. 
+
+
+
+2.4 UART Specifications: 
+-------------------------
+
+Baud rate 	: 115200 bits per second
+System clock 	: 33MHz
+
+Offset of 286 cycles / 8680ns for each bit.
+
+UART Controllers: 
+Receive  -> rcu.v
+
+Transmit -> tcu.v 	
+
+CRC module is added to send a CRC packet for each byte receive and transmit.	
+
+
+3.0 Design Reports
+-------------------
+
+Summary report extracted from zcui.work/zebu.work/zBuild_report.log
+
+
+Design content summary, Luts, BRams, Flip-Flops, Latches, Multiplexers, Multipliers, other logic:
+          +----------------------------------+----+
+          |Logic LUTs                        |1031|
+          |RAMLUTs                           |   0|
+          |Logic LUTs + RAMLUTs              |1031|
+          |Logic LUTs + RAMLUTs + other logic|1031|
+          |BRAMs                             |   0|
+          |Flip-Flops                        | 551|
+          |Flip-Flops + Latches + other logic| 551|
+          |Multiplexers                      | 139|
+          |MULT18/DSP                        |   0|
+          |Other logic                       |1038|
+          |Lut equiv other logic             |   0|
+          |Reg equiv Other logic             |   0|
+          +----------------------------------+----+
+
+Multi-instantiation cost ordered by LUT
+          +-----------+-------------+---------+---------+-------------+-------------+------+
+          |Nb Instance|  Module name|LUT EQUIV|REG_EQUIV|ALL LUT EQUIV|ALL REG_EQUIV|Nb IOs|
+          +-----------+-------------+---------+---------+-------------+-------------+------+
+          |1          |     debugger|488      |383      |488          |383          |127   |
+          |1          | core_wrapper|269      |95       |269          |95           |230   |
+          |139        |       addelt|1        |0        |139          |0            |5     |
+          |1          |     transmit|41       |24       |41           |24           |16    |
+          |1          |        timer|37       |13       |37           |13           |5     |
+          |1          |       buffer|25       |24       |25           |24           |13    |
+          |1          |          rcu|13       |5        |13           |5            |12    |
+          |1          |          tcu|10       |3        |10           |3            |10    |
+          |6          |    addelt_so|1        |0        |6            |0            |4     |
+          |1          | stop_bit_chk|2        |1        |2            |1            |6     |
+          |1          |start_bit_det|1        |3        |1            |3            |4     |
+          |551        |        zview|0        |0        |0            |0            |1     |
+          |1          | debugger_top|0        |0        |0            |0            |110   |
+          +-----------+-------------+---------+---------+-------------+-------------+------+
+
+
+
+4.0 Resources/Reference 
+------------------------
+1. http://www.riveywood.com/ahbintro.html
+2. http://infocenter.arm.com/help/index.jsp
+*Other reference are included in the docs folder
+
+Reference UART design : 
+1. http://www.quicklogic.com/assets/pdf/data_sheets/QL_UART_PSB_DS_RevC.pdf
+2. http://www.ece301.com/fpga-projects/52-uart-txd.html
+3. http://www.engr.siu.edu/~haibo/ece428/notes/ece428_uart.pdf
+4. http://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter
+
+

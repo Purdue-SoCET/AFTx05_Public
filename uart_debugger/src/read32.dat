@@ -1,0 +1,26 @@
+#READ32 DATA FILE
+#**DO NOT ADD A NEWLINE
+#Performs 3 testcases:
+#Testcase 1 => Read from Memory Backwards
+#Testcase 2 => Ramdom Reads from Memory
+#Testcase 3 => Multiple Reads from Memory
+#testcase1
+#addr = 36
+#count = 1
+1 36 1
+#testcase2
+#addr = 30
+#count =  1
+2 30 1
+#testcase2 
+#addr = 6
+#count = 1
+2 6 1
+#testcase2 
+#addr = 6
+#count = 1
+2 15 1
+#testcase3
+#addr = 0
+#count = 8
+3 0 8

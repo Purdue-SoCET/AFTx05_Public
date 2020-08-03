@@ -1,0 +1,16 @@
+`include "memory_blocks_if.vh"
+
+module SOC_ROM(memory_blocks_if.rom blkif);
+
+parameter ROM_TOP = 16'h2000;
+parameter ROM_BOTTOM  = 16'h3b;
+
+logic [31:0] addr;
+
+assign addr = blkif.addr >> 2; // ROM is byte addressed
+
+assign blkif.rom_active = addr >= ROM_BOTTOM && addr < ROM_TOP;
+assign blkif.rom_wait = 1'b0;
+
+always_comb begin
+        case (addr)

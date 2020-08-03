@@ -1,0 +1,14 @@
+#WRAPPER DATA FILE
+#**DO NOT ADD A NEWLINE
+####
+####
+#CASE 1
+#addr = 0
+#count = 32
+#write_data = 1
+1 0 32 1 
+#CASE 2 
+#addr = 0
+#count = 8
+#write_data = X (reading)
+2 0 8 0 

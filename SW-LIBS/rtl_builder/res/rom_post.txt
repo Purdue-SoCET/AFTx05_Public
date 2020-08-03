@@ -1,0 +1,5 @@
+          default : blkif.rom_rdata <= 32'hDEADBEEF;
+        endcase
+end
+endmodule
+
