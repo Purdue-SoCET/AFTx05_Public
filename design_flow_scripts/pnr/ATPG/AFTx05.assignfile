@@ -1,0 +1,7 @@
+assign pin "clk_pad" test_function=0ES;
+assign pin "test_sig_pad" test_function=1TI;
+assign pin "scan_in_1_pad" test_function=SI;
+assign pin "scan_out_1_pad" test_function=SO;
+assign pin "scan_en_pad" test_function=+SE;
+assign pin "asyncrst_n_pad" test_function=1TI;
+

@@ -1,0 +1,32 @@
+I I
+
+# Write some data as a locked burst transfer
+L 1 B 3 P F
+A 00000000
+W 11111111
+W 22222222
+W 33333333
+W 44444444
+
+I
+
+# Now read it back!
+L 0 B 0 P 3
+A 00000000          #           Inline test
+R
+R
+R
+R
+
+I
+
+# Test expectation and mask.
+A 00000000
+M 0000FF00
+E 00001100
+M FFFFFFFF
+E 22222222
+E 33333333
+E 44444444
+
+X               # End

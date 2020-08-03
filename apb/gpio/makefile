@@ -1,0 +1,166 @@
+###############################################################################
+# Serial Port Build and Test
+#
+#
+###############################################################################
+
+# This makefile only supports the compilation of files under the source 
+# directory. This means that you need to symlink files/directories into source 
+# as needed, for example cell library simulation sources, e.g. osu05_stdcells.v
+
+# Please add the verilog and VHDL files that make the design. Make sure the first one is the top level of the design.
+COMPONENT_FILES := Gpio.sv APB_SlaveInterface.sv edge_detector.sv
+
+#Top Level file needed for synthesis
+TOP_LEVEL_FILE := Gpio.sv
+
+# Extract and use the first architecture name in the top level file for synthesis
+MAPPED_ARCH := $(word 2,$(shell grep -i -m 1 -s '^[[:space:]]*architecture' source/$(TOP_LEVEL_FILE)))
+TOP_ENTITY  := $(basename $(TOP_LEVEL_FILE))
+
+# Please add the verilog and VHDL files that make up the testbench. Ensure that the first one is the top level of the testbench.
+TEST_BENCH_FILES    := tb_Gpio.sv
+
+
+# Please add in extra files needed for specific simulations here
+OSU05_STD_CELL := osu05/osu05_stdcells.v
+
+##############################################################################
+# Makefile constants
+##############################################################################
+SIM_DIR := sim
+
+SIM_TARGETS := source mapped_osu05
+
+VSIMFLAGS := -vopt -voptargs='+acc' -i -t ps 
+
+#Specify how to map libraries for modelsim. <NAME>:<PATH> for vmap
+VSIM_LIBS := 
+
+# Automatically handle runing on the grid
+ifeq ($(shell hostname),ecegrid-lnx.ecn.purdue.edu)
+GRID_TEST := gridtest $(MAKE) -f new_makefile
+else
+GRID_TEST := $(MAKE) -f new_makefile
+endif
+
+ifeq ($(shell hostname),ecegrid-lnx.ecn.purdue.edu)
+LIB_CREATE              := gridtest vlib
+LIB_MAP                 := gridtest vmap
+COMPILE_V               := gridtest vlog
+COMPILE_VHD             := gridtest vcom
+SIMULATE                := gridtest vsim
+DC_SHELL                := gridtest dc_shell-t
+else
+LIB_CREATE              := vlib
+LIB_MAP                 := vmap
+COMPILE_V               := vlog
+COMPILE_VHD             := vcom
+SIMULATE                := vsim
+DC_SHELL                := dc_shell-t
+endif
+
+##############################################################################
+# Usage Definition
+##############################################################################
+
+define USAGE
+@echo "Makefile Usage:"
+@echo "----------------------------------------------------------------"
+@echo "Compilation targets:"
+@echo "  new_sim_source	- compiles the source version"
+@echo "  new_sim_mapped	- compiles the mapped version"
+@echo "  syn_mapped		- synthesized mapped version" 
+@echo "----------------------------------------------------------------"
+endef
+
+default: 
+	$(USAGE)
+
+##############################################################################
+# Simulation Targets Rules
+##############################################################################
+
+#Strategy: ModelSim compiles stuff into its own "work" directory which annoys 
+#	make as there is no '.o' equivalent. We address this by defining 
+#	pattern rules for RTL file types to 
+#	compile into "work" and touch an identically named .stamp file in the 
+#	stamp dir. We then change the simulation targets to depend on the 
+#	stamp file. This makes make work properly.
+
+#Autogenerate rules for each SIM_TARGETS sim.
+define make-sim-target
+
+#Setup the simulation directory with first argument:
+$(SIM_DIR)/$1 : 
+	@if [ ! -d $$(SIM_DIR) ]; then mkdir $$(SIM_DIR); fi;
+	@if [ ! -d $$@ ]; then mkdir $$@; fi;
+	@if [ ! -d $$@/stamp ]; then mkdir $$@/stamp; fi;
+	@if [ ! -e $$@/sim.log ]; then touch $$@/sim.log; fi; 
+	@if [ ! -d $$@/work ]; then $$(LIB_CREATE) $$@/work; fi;
+	@cd $$@; \
+	for lib in $$(VSIM_LIBS); \
+		do LIB_NAME=$$$$(echo $$$$lib | cut -f1 -d:); \
+		LIB_PATH=$$$$(echo $$$$lib | cut -f2 -d:); \
+		$$(LIB_MAP) $$$$LIB_NAME $$$$LIB_PATH ; \
+	done;
+
+#Three rules for compiling RTL into work directory and create stamp.
+$(SIM_DIR)/$1/stamp/%.v.stamp : source/%.v | $(SIM_DIR)/$1
+	@echo -e "Compiling: $$<"
+	@$$(COMPILE_V) $$(VFLAGS) -work $$(SIM_DIR)/$1/work +incdir+source $$< >> $$(SIM_DIR)/$1/sim.log
+	@if [ ! -d $$(dir $$@) ]; then mkdir -p $$(dir $$@); fi;
+	@touch $$@
+
+$(SIM_DIR)/$1/stamp/%.sv.stamp : source/%.sv | $(SIM_DIR)/$1
+	@echo -e "Compiling: $$<"
+	@$$(COMPILE_V) $$(SVFLAGS) -work $$(SIM_DIR)/$1/work +incdir+source $$< >> $$(SIM_DIR)/$1/sim.log
+	@if [ ! -d $$(dir $$@) ]; then mkdir -p $$(dir $$@); fi;
+	@touch $$@
+
+#Note: To ensure that the modelsim.ini file is read we need to cd into the 
+#   directory where it was created.
+$(SIM_DIR)/$1/stamp/%.vhd.stamp : source/%.vhd | $(SIM_DIR)/$1
+	@echo -e "Compiling: $$<"
+	@cd $$(SIM_DIR)/$1; $$(COMPILE_VHD) $$(VHDFLAGS) -work work ../../$$< >> sim.log
+	@if [ ! -d $$(dir $$@) ]; then mkdir -p $$(dir $$@); fi;
+	@touch $$@
+
+endef
+
+#Pattern Rule to generate new assertion files based on changes to the original file.
+source/%.assertions : source/%
+	@echo -e "Generating/Updating: $@"
+	@scripts/assertion_update.py $<
+
+
+#Generate rules for every SIM_TARGETS
+$(foreach d,$(SIM_TARGETS),$(eval $(call make-sim-target,$d)))
+
+#A tidy up function for Simulation Targets Below that turns all RTL into a stamp dependency
+sim_compile = $(patsubst %,$(SIM_DIR)/$(1)/stamp/%.stamp,$(2))
+
+##############################################################################
+# Synthesis Targets
+##############################################################################
+
+
+##############################################################################
+# Simulation Targets
+##############################################################################
+
+.PHONY : sim_source
+.PHONY : sim_source_actual
+
+sim_source:
+	@$(GRID_TEST) sim_source_actual
+sim_source_actual : $(call sim_compile,source,$(COMPONENT_FILES) $(TEST_BENCH_FILES)) $(patsubst %,source/%,$(ASSERTIONS))
+	@cd $(SIM_DIR)/source; if [ ! -e source ]; then ln -s ../../source source; fi;
+	@echo "cd $(SIM_DIR)/source; $(SIMULATE) $(VSIMFLAGS) $(basename $(notdir $(firstword $(TEST_BENCH_FILES))))"
+
+sim_mapped_osu05:
+	@$(GRID_TEST) sim_mapped_actual_osu05
+sim_mapped_actual_osu05 : $(call sim_compile,mapped_osu05,$(COMPONENT_FILES) $(TEST_BENCH_FILES) $(OSU05_STD_CELL)) $(SIM_DIR)/mapped_osu05/modelsim.ini
+	@cd $(SIM_DIR)/mapped_osu05; if [ ! -e source ]; then ln -s ../../source source; fi;
+	@echo "cd $(SIM_DIR)/mapped_osu05; $(SIMULATE) $(VSIMFLAGS) $(basename $(notdir $(firstword $(TEST_BENCH_FILES))))"
+

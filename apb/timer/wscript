@@ -1,0 +1,8 @@
+
+def configure(ctx):
+    ctx.setup_hdl_module('timer',
+        includes = ['include','../../amba_common/include'],
+	tb = 'tb_timer',
+	tb_includes = ['include', '../../amba_common/include']
+    )
+
